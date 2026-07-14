@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC Dream Chasers — Start Your Application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0A0A0B;
+    --charcoal:#181613;
+    --card:#201D18;
+    --gold:#C9A227;
+    --gold-bright:#F2C94C;
+    --cream:#F5F1E6;
+    --muted:#948C78;
+    --error:#E8604C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:radial-gradient(circle at 50% -10%, #24211b 0%, var(--black) 55%);
+    color:var(--cream);
+    font-family:'Poppins', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .wrap{
+    width:100%;
+    max-width:460px;
+  }
+  .brand{
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .brand .mark{
+    font-family:'Archivo Black', sans-serif;
+    font-size:13px;
+    letter-spacing:0.32em;
+    color:var(--gold);
+    text-transform:uppercase;
+  }
+  .brand .sub{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:4px;
+    letter-spacing:0.04em;
+  }
+  .meter{
+    height:6px;
+    width:100%;
+    background:#2A2620;
+    border-radius:99px;
+    overflow:hidden;
+    margin-bottom:28px;
+    position:relative;
+  }
+  .meter-fill{
+    height:100%;
+    width:16.6%;
+    background:linear-gradient(90deg, var(--gold), var(--gold-bright));
+    border-radius:99px;
+    transition:width 0.45s cubic-bezier(.65,0,.35,1);
+    box-shadow:0 0 12px rgba(242,201,76,0.5);
+  }
+  .card{
+    background:var(--charcoal);
+    border:1px solid #2C2822;
+    border-radius:18px;
+    padding:36px 28px;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:'';
+    position:absolute;
+    top:-40%;
+    right:-30%;
+    width:220px;
+    height:220px;
+    background:radial-gradient(circle, rgba(201,162,39,0.14), transparent 70%);
+    pointer-events:none;
+  }
+  .step{
+    display:none;
+    animation:rise 0.4s ease;
+  }
+  .step.active{display:block;}
+  @keyframes rise{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Archivo Black', sans-serif;
+    font-size:26px;
+    line-height:1.22;
+    margin-bottom:8px;
+    color:var(--cream);
+  }
+  .helper{
+    font-size:14px;
+    color:var(--muted);
+    margin-bottom:24px;
+    line-height:1.5;
+  }
+  label{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:6px;
+    font-weight:500;
+  }
+  input[type=text], input[type=tel], input[type=email], textarea{
+    width:100%;
+    background:#141210;
+    border:1.5px solid #322C24;
+    border-radius:10px;
+    padding:13px 14px;
+    color:var(--cream);
+    font-family:'Poppins', sans-serif;
+    font-size:15px;
+    margin-bottom:16px;
+    transition:border-color 0.2s;
+  }
+  input:focus, textarea:focus{
+    outline:none;
+    border-color:var(--gold);
+  }
+  textarea{resize:none; min-height:80px;}
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .opt{
+    background:#141210;
+    border:1.5px solid #322C24;
+    border-radius:10px;
+    padding:14px 16px;
+    cursor:pointer;
+    font-size:14.5px;
+    font-weight:500;
+    color:var(--cream);
+    transition:border-color 0.15s, background 0.15s;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .opt:hover{border-color:#4A4030;}
+  .opt.selected{
+    border-color:var(--gold);
+    background:linear-gradient(90deg, rgba(201,162,39,0.14), rgba(201,162,39,0.05));
+  }
+  .opt.selected::after{
+    content:'✓';
+    color:var(--gold-bright);
+    font-weight:700;
+  }
+  .nav{
+    display:flex;
+    gap:10px;
+    margin-top:24px;
+  }
+  button{
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    border:none;
+    border-radius:10px;
+    padding:14px 20px;
+    cursor:pointer;
+    transition:transform 0.12s, opacity 0.12s;
+  }
+  button:active{transform:scale(0.98);}
+  .btn-next{
+    flex:1;
+    background:linear-gradient(90deg, var(--gold), var(--gold-bright));
+    color:#1A1608;
+  }
+  .btn-next:disabled{
+    opacity:0.35;
+    cursor:not-allowed;
+  }
+  .btn-back{
+    background:transparent;
+    color:var(--muted);
+    border:1.5px solid #322C24;
+    padding:14px 18px;
+  }
+  .err{
+    color:var(--error);
+    font-size:12.5px;
+    margin:-10px 0 14px;
+    display:none;
+  }
+  .err.show{display:block;}
+  .success{
+    text-align:center;
+    padding:20px 0;
+  }
+  .success .icon{
+    width:60px;height:60px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--gold), var(--gold-bright));
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;
+    color:#1A1608;
+  }
+  .success h1{margin-bottom:10px;}
+  .success p{color:var(--muted); font-size:14.5px; line-height:1.6;}
+  .foot{
+    text-align:center;
+    font-size:11.5px;
+    color:#5C564A;
+    margin-top:18px;
+    letter-spacing:0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="mark">TC Dream Chasers</div>
+    <div class="sub">Agent Application</div>
+  </div>
+
+  <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+
+  <div class="card">
+    <form id="inquiryForm">
+
+      <!-- Step 1: Name -->
+      <div class="step active" data-step="1">
+        <div class="eyebrow">Step 1 of 5</div>
+        <h1>Let's start with your name.</h1>
+        <p class="helper">Quick one. Tell us who's chasing the dream.</p>
+        <label for="firstName">First name</label>
+        <input type="text" id="firstName" placeholder="Eileen">
+        <label for="lastName">Last name</label>
+        <input type="text" id="lastName" placeholder="Ramirez">
+        <div class="err" id="err1">Fill in both your first and last name to continue.</div>
+      </div>
+
+      <!-- Step 2: Contact -->
+      <div class="step" data-step="2">
+        <div class="eyebrow">Step 2 of 5</div>
+        <h1>How should we reach you?</h1>
+        <p class="helper">We follow up fast with serious applicants — usually same day.</p>
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" placeholder="(772) 555-0134">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@email.com">
+        <div class="err" id="err2">Add a valid phone number and email so we can follow up.</div>
+      </div>
+
+      <!-- Step 3: Motivation -->
+      <div class="step" data-step="3">
+        <div class="eyebrow">Step 3 of 5</div>
+        <h1>What's pulling you toward this?</h1>
+        <p class="helper">Be honest — this tells us how to support you.</p>
+        <div class="options" data-group="motivation">
+          <div class="opt" data-value="Extra income on the side">Extra income on the side</div>
+          <div class="opt" data-value="Ready to leave my 9-5">Ready to leave my 9-5</div>
+          <div class="opt" data-value="Building my own agency">Building my own agency</div>
+          <div class="opt" data-value="Just exploring for now">Just exploring for now</div>
+        </div>
+        <div class="err" id="err3">Pick the option that fits best.</div>
+      </div>
+
+      <!-- Step 4: Experience -->
+      <div class="step" data-step="4">
+        <div class="eyebrow">Step 4 of 5</div>
+        <h1>What's your background in sales or insurance?</h1>
+        <p class="helper">No experience? Plenty of our top agents started from zero.</p>
+        <div class="options" data-group="experience">
+          <div class="opt" data-value="Licensed insurance agent already">Licensed insurance agent already</div>
+          <div class="opt" data-value="Sales experience, no insurance">Sales experience, no insurance</div>
+          <div class="opt" data-value="No sales or insurance experience">No sales or insurance experience</div>
+        </div>
+        <div class="err" id="err4">Pick the option that fits best.</div>
+      </div>
+
+      <!-- Step 5: Timeline + note -->
+      <div class="step" data-step="5">
+        <div class="eyebrow">Step 5 of 5</div>
+        <h1>How soon do you want to get moving?</h1>
+        <div class="options" data-group="timeline">
+          <div class="opt" data-value="This week">This week</div>
+          <div class="opt" data-value="This month">This month</div>
+          <div class="opt" data-value="Just exploring, no rush">Just exploring, no rush</div>
+        </div>
+        <label for="note">Anything else we should know? (optional)</label>
+        <textarea id="note" placeholder="Questions, background, availability..."></textarea>
+        <div class="err" id="err5">Pick a timeline to submit.</div>
+      </div>
+
+      <!-- Success -->
+      <div class="step" data-step="success">
+        <div class="success">
+          <div class="icon">✓</div>
+          <h1>You're in the pipeline.</h1>
+          <p>Thanks for applying with TC Dream Chasers. We review every application personally — expect a text or email from us soon. Keep chasing.</p>
+        </div>
+      </div>
+
+      <div class="nav" id="navRow">
+        <button type="button" class="btn-back" id="backBtn" style="display:none;">Back</button>
+        <button type="button" class="btn-next" id="nextBtn">Continue</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="foot">TC Dream Chasers · Stuart, FL</div>
+</div>
+
+<script>
+  // ⚠️ SETUP: replace this with your own Formspree endpoint (see instructions below the code)
+  const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+
+  const steps = [1,2,3,4,5];
+  let current = 0;
+  const answers = { motivation:null, experience:null, timeline:null };
+
+  const meterFill = document.getElementById('meterFill');
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navRow = document.getElementById('navRow');
+
+  function showStep(stepNum){
+    document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+    document.querySelector(`.step[data-step="${stepNum}"]`).classList.add('active');
+  }
+
+  function updateMeter(){
+    const pct = ((current+1) / (steps.length+1)) * 100;
+    meterFill.style.width = pct + "%";
+  }
+
+  function clearErr(n){ document.getElementById('err'+n).classList.remove('show'); }
+  function showErr(n){ document.getElementById('err'+n).classList.add('show'); }
+
+  // Option select handlers
+  document.querySelectorAll('.options').forEach(group => {
+    group.addEventListener('click', (e) => {
+      const opt = e.target.closest('.opt');
+      if(!opt) return;
+      group.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      answers[group.dataset.group] = opt.dataset.value;
+    });
+  });
+
+  function validateStep(stepNum){
+    if(stepNum === 1){
+      const ok = document.getElementById('firstName').value.trim() && document.getElementById('lastName').value.trim();
+      ok ? clearErr(1) : showErr(1);
+      return ok;
+    }
+    if(stepNum === 2){
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const ok = phone.length >= 7 && email.includes('@');
+      ok ? clearErr(2) : showErr(2);
+      return ok;
+    }
+    if(stepNum === 3){
+      const ok = !!answers.motivation;
+      ok ? clearErr(3) : showErr(3);
+      return ok;
+    }
+    if(stepNum === 4){
+      const ok = !!answers.experience;
+      ok ? clearErr(4) : showErr(4);
+      return ok;
+    }
+    if(stepNum === 5){
+      const ok = !!answers.timeline;
+      ok ? clearErr(5) : showErr(5);
+      return ok;
+    }
+    return true;
+  }
+
+  async function submitForm(){
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Submitting...";
+
+    const payload = {
+      firstName: document.getElementById('firstName').value.trim(),
+      lastName: document.getElementById('lastName').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      motivation: answers.motivation,
+      experience: answers.experience,
+      timeline: answers.timeline,
+      note: document.getElementById('note').value.trim()
+    };
+
+    try{
+      await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    }catch(err){
+      console.error("Submission error:", err);
+    }
+
+    showStep('success');
+    navRow.style.display = 'none';
+    meterFill.style.width = '100%';
+  }
+
+  nextBtn.addEventListener('click', () => {
+    const stepNum = steps[current];
+    if(!validateStep(stepNum)) return;
+
+    if(current === steps.length - 1){
+      submitForm();
+      return;
+    }
+
+    current++;
+    showStep(steps[current]);
+    updateMeter();
+    backBtn.style.display = current === 0 ? 'none' : 'block';
+    nextBtn.textContent = current === steps.length - 1 ? "Submit Application" : "Continue";
+  });
+
+  backBtn.addEventListener('click', () => {
+    if(current === 0) return;
+    current--;
+    showStep(steps[current]);
+    updateMeter();
+    backBtn.style.display = current === 0 ? 'none' : 'block';
+    nextBtn.textContent = current === steps.length - 1 ? "Submit Application" : "Continue";
+  });
+
+  updateMeter();
+</script>
+</body>
+</html>
